@@ -71,6 +71,7 @@ export class AppComponent implements OnInit {
         (response: HttpResponse<Blob>) => {
           // let filename: string = this.getFileName(response)
           var contentDisposition = response.headers.get('content-disposition');
+          console.log("contentDisposition====>", contentDisposition);
           var filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
           
           // filename = filename.replace(/\s/g, "");
