@@ -1,3 +1,4 @@
+using BooksApi.Helpers;
 using BooksApi.Interfaces;
 using BooksApi.Models;
 using BooksApi.Services;
@@ -32,6 +33,7 @@ namespace BooksApi
 
             services.AddSingleton<IBookService, BookService>();
             services.AddSingleton<IFileService, FileService>();
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

@@ -16,5 +16,7 @@ namespace BooksApi.Interfaces
         Task<DocumentInfo> GetFileInfo(string id);
         Task<Document> SaveFile(string id);
         Task<Document> DownloadFile(string id);
+        Task<IEnumerable<DocumentInfo>> GetFilesInfo();
+        Task DeleteFile(string id);
     }
 }

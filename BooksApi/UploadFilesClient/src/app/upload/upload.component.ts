@@ -40,16 +40,5 @@ export class UploadComponent implements OnInit {
           this.onUploadFinished.emit(event.body);
         }
       });
-
-    let res = {
-      "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-      "title": "One or more validation errors occurred.",
-      "status": 400,
-      "traceId": "00-ba793dfb486bc949824a96bc1c39d249-12c21016616e0d40-00",
-      "errors": {
-        "$.authorPhoto":
-          ["The JSON value could not be converted to Microsoft.AspNetCore.Http.IFormCollection. Path: $.authorPhoto | LineNumber: 0 | BytePositionInLine: 98."]
-      }
-    }
   }
 }

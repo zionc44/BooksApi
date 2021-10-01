@@ -14,7 +14,7 @@ namespace BooksApi.Services
         public BookService(IMongoDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);   
+            var database = client.GetDatabase(settings.DatabaseName);
 
             _books = database.GetCollection<Book>("Books");
         }

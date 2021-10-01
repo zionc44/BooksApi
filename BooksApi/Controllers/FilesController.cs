@@ -3,6 +3,9 @@ using BooksApi.Interfaces;
 using BooksApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using MongoDB.Driver.GridFS;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -66,6 +69,21 @@ namespace BooksApi.Controllers
             memory.Position = 0;
 
             return File(memory, document.DocumentFileType, document.DocumentFileName);
+        }
+
+        [HttpGet("GetFilesInfo")]
+        public async Task<ActionResult<IEnumerable<DocumentInfo>>> GetFilesInfo()
+        {
+            var docList= await _filesService.GetFilesInfo();
+
+            return Ok(docList);
+        }
+
+        [HttpDelete("DeleteFile")]
+        public async Task<ActionResult> DeleteFile(string documentId)
+        {
+            await _filesService.DeleteFile(documentId);
+            return Ok("File deleted successfully");
         }
     }
 }

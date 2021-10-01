@@ -1,10 +1,12 @@
-﻿using BooksApi.DTOs;
+﻿using AutoMapper;
+using BooksApi.DTOs;
 using BooksApi.Interfaces;
 using BooksApi.Models;
 using Microsoft.AspNetCore.StaticFiles;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -13,6 +15,7 @@ namespace BooksApi.Services
     public class FileService : IFileService
     {
         private readonly GridFSBucket _fSBucket;
+
         public FileService(IMongoDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
@@ -73,18 +76,15 @@ namespace BooksApi.Services
         {
             var docId = ObjectId.Parse(id);
             var filter = Builders<GridFSFileInfo<ObjectId>>.Filter.Eq("_id", docId);
-            var fileInfos = await _fSBucket.FindAsync(filter);
+            var fileInfos = await _fSBucket
+                .FindAsync(filter);
+
+
             var fileInfo = await fileInfos.FirstOrDefaultAsync();
+
             if (fileInfo != null)
             {
-                return new DocumentInfo
-                {
-                    DocumentId = fileInfo.Id.ToString(),
-                    DocumentFileName = fileInfo.Filename,
-                    DocumentFileType = (string)fileInfo.Metadata.GetValue(0),
-                    DocumentName = (string)fileInfo.Metadata.GetValue(4),
-                    FormFileName = (string)fileInfo.Metadata.GetValue(3)
-                };
+                return GridFSFileInfoToDocumentInfo(fileInfo);
             }
 
             return null;
@@ -112,6 +112,39 @@ namespace BooksApi.Services
                 var id = await _fSBucket.UploadFromBytesAsync(document.DocumentFile.FileName, ms.ToArray(), options);
                 return id;
             }
+        }
+
+        public async Task<IEnumerable<DocumentInfo>> GetFilesInfo()
+        {
+            List<DocumentInfo> docList = new List<DocumentInfo>();
+
+            var filter = Builders<GridFSFileInfo<ObjectId>>.Filter.Empty;
+            var fileInfos = await _fSBucket.FindAsync(filter);
+
+            foreach (var file in fileInfos.ToList())
+            {
+                docList.Add(GridFSFileInfoToDocumentInfo(file));
+            }
+
+            return docList;
+        }
+
+        private DocumentInfo GridFSFileInfoToDocumentInfo(GridFSFileInfo<ObjectId> fileInfo)
+        {
+            return new DocumentInfo
+            {
+                DocumentId = fileInfo.Id.ToString(),
+                DocumentFileName = fileInfo.Filename,
+                DocumentFileType = (string)fileInfo.Metadata.GetValue(0),
+                DocumentName = (string)fileInfo.Metadata.GetValue(4),
+                FormFileName = (string)fileInfo.Metadata.GetValue(3)
+            };
+        }
+
+        public async Task DeleteFile(string id)
+        {
+            var docId = ObjectId.Parse(id);
+            await _fSBucket.DeleteAsync(docId);
         }
     }
 }
