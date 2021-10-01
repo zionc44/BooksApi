@@ -1,18 +1,33 @@
 <div class="row" style="margin-bottom:15px; margin-top: 15px;">
-    <div class="col-md-3">
-      <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
-      <button type="button" class="btn btn-success" (click)="file.click()">Upload File</button>
-    </div>
-    <div class="col-md-9">
-      <span class="upload" *ngIf="progress > 0">
-        {{progress}}%
-      </span>
-      <span class="upload" *ngIf="message">
-        {{message}}
-      </span>
-      <span class="upload" *ngIf="message">
-        Doc Id: {{documentId}}
-      </span>
-
-    </div>
+  <div class="col-md-3">
+    <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+    <button type="button" class="btn btn-success" (click)="file.click()">Upload File</button>
   </div>
+  <div class="col-md-9">
+    <span class="upload" *ngIf="progress > 0">
+      {{progress}}%
+    </span>
+    <span class="upload" *ngIf="message">
+      {{message}}
+    </span>
+    <span class="upload" *ngIf="message">
+      Doc Id: {{documentId}}
+    </span>
+
+  </div>
+</div>
+
+<div class="row" style="margin-bottom:15px; margin-top: 15px;">
+  <div class="col-md-3">
+    <input type="file" #file2 placeholder="Choose file" (change)="copyFile(file2.files)" style="display:none;">
+    <button type="button" class="btn btn-success" (click)="file2.click()">Copy File</button>
+  </div>
+  <div class="col-md-9">
+    <span class="upload" *ngIf="progress2 > 0">
+      {{progress2}}%
+    </span>
+    <span class="upload" *ngIf="message2">
+      {{message2}}
+    </span>
+  </div>
+</div>

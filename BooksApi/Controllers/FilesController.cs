@@ -19,6 +19,7 @@ namespace BooksApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[DisableRequestSizeLimit]
     public class FilesController : ControllerBase
     {
         private readonly IFileService _filesService;
