@@ -3,13 +3,13 @@
     <!-- <h1>Create User</h1> -->
     <form>
       <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" [(ngModel)]="name">
+        <label for="name">Document Id</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter document id" [(ngModel)]="name">
       </div>
 
       <div class="row">
         <div class="col-3">
-          <button type="button" class="btn btn-success" (click)="downloadFile1()">download File</button>
+          <button type="button" class="btn btn-success" (click)="downloadFile1()">Download File</button>
         </div>
 
         <div *ngIf="isFileReady" class="col-6">

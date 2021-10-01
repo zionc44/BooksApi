@@ -71,9 +71,13 @@ export class AppComponent implements OnInit {
         (response: HttpResponse<Blob>) => {
           // let filename: string = this.getFileName(response)
           var contentDisposition = response.headers.get('content-disposition');
-          var filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
+          console.log("contentDisposition===>", contentDisposition.split(';')[2].split('filename*')[1].split('=')[1].trim());  
+
+          var utf8FileName = contentDisposition.split(';')[2].split('filename*')[1].split('=UTF-8\'\'')[1].trim();
+          var filename = decodeURIComponent(utf8FileName.replace(/\+/g," "));
+          // console.log("x====>", x);
+          // var filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
           
-          // filename = filename.replace(/\s/g, "");
           console.log("filename====>",filename);
 
           let binaryData = [];

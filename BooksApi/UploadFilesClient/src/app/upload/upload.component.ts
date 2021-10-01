@@ -8,6 +8,7 @@ import { HttpEventType, HttpClient } from '@angular/common/http';
 export class UploadComponent implements OnInit {
   public progress: number;
   public message: string;
+  public documentId: string;
   @Output() public onUploadFinished = new EventEmitter();
   constructor(private http: HttpClient) { }
   ngOnInit() {
@@ -37,6 +38,7 @@ export class UploadComponent implements OnInit {
           this.progress = Math.round(100 * event.loaded / event.total);
         else if (event.type === HttpEventType.Response) {
           this.message = 'Upload success.';
+          this.documentId = (<any>event.body).documentId;
           this.onUploadFinished.emit(event.body);
         }
       });
